@@ -54,11 +54,11 @@ function game(){
     playRound(i+1);
     if(winner === "player"){
       winner = null;
-      playerScore += 1;
+      playerScore ++;
     }
     if(winner === "computer"){
       winner = null;
-      computerScore += 1;
+      computerScore ++;
     }
     console.log(`Score is ${playerScore} to ${computerScore}`)   
   }
