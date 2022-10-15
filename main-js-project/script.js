@@ -37,9 +37,11 @@ function playRound(roundNumber){
         winner = "computer";
     }
     if(winner === "player"){
+      alert(`You win! ${playerSelection} beats ${computerSelection}.`)
       console.log(`You win! ${playerSelection} beats ${computerSelection}.`)
     }
     else {
+      alert(`You lose! ${computerSelection} beats ${playerSelection}.`)
       console.log(`You lose! ${computerSelection} beats ${playerSelection}.`)
     }
   }
