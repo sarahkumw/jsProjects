@@ -1,91 +1,82 @@
-const plays = ["rock", "paper", "scissors"];
-let winner;
+let playerScore = 0;
+let computerScore = 0;
 
 function computerPlay(){
+  const plays = ["rock", "paper", "scissors"];
   const randomIndex = Math.floor(plays.length * Math.random());
   return plays[randomIndex];
 };
 
-function playRound(roundNumber){
-  const playerSelection = prompt(`Do you want to play 'Rock', 'Paper', or 'Scissors'?        Round ${roundNumber} of 5`)
-  const computerSelection = computerPlay();
-  if(!plays.includes(playerSelection.toLowerCase())){
-    return "That selection is not valid, please play again."
-  }  
-  console.log(`You played ${playerSelection} and computer played ${computerSelection}`);
-  if(playerSelection.toLowerCase() === computerSelection.toLowerCase()){
-    return "This round is a tie.  Try again!"
+function playRound(playerSelection){
+  if(playerScore === 5 || computerScore === 5) {return}
+  const computerSelection = computerPlay(); 
+  const roundResult = document.getElementById("round");
+  if(playerSelection === computerSelection){
+    roundResult.innerHTML = 
+      `<p>You played ${playerSelection} and computer played ${computerSelection}</p>
+      <p>This round is a tie.  Try again!</p>`
   }
   else {
-    switch(`${playerSelection.toLowerCase()} vs ${computerSelection.toLowerCase()}`){
-      case "rock vs paper":
-        winner = "computer";
-        break;
-      case "rock vs scissors":
-        winner = "player";
-        break;
-      case "paper vs rock":
-        winner = "player";
-        break;
-      case "paper vs scissors":
-        winner = "computer";
-        break;
-      case "scissors vs paper":
-        winner = "player";
-        break;
-      case "scissors vs rock":
-        winner = "computer";
-    }
-    if(winner === "player"){
-      alert(`You win! ${playerSelection} beats ${computerSelection}.`)
-      console.log(`You win! ${playerSelection} beats ${computerSelection}.`)
+    if(playerSelection === "rock" && computerSelection === "scissors" ||
+    playerSelection === "scissors" && computerSelection === "paper" ||
+    playerSelection === "paper" && computerSelection === "rock") {
+      playerScore ++
+      displayScore();
+      roundResult.innerHTML = 
+      `<p>You played ${playerSelection} and computer played ${computerSelection}</p>
+      <p>You win! ${playerSelection} beats ${computerSelection}.</p>`
+      if(playerScore === 5){
+        endGame();
+      }
     }
     else {
-      alert(`You lose! ${computerSelection} beats ${playerSelection}.`)
-      console.log(`You lose! ${computerSelection} beats ${playerSelection}.`)
-    }
-  }
-}
-
-function game(){
-  let playerScore = 0;
-  let computerScore = 0;
-  for(let i=0; i<5; i++){
-    playRound(i+1);
-    if(winner === "player"){
-      winner = null;
-      playerScore ++;
-    }
-    if(winner === "computer"){
-      winner = null;
       computerScore ++;
+      displayScore();
+      roundResult.innerHTML =
+      `<p>You played ${playerSelection} and computer played ${computerSelection}</p>
+      <p>You lose! ${computerSelection} beats ${playerSelection}.</p>`;
+      if(computerScore === 5){
+        endGame();
+      }
     }
-    console.log(`Score is ${playerScore} to ${computerScore}`)   
   }
+};
+
+function displayScore() {
+  const div = document.getElementById("score");
+  div.textContent = `You: ${playerScore} Computer: ${computerScore}`
+};
+
+function endGame(){
   if(playerScore === computerScore){
-    console.log("It's a tie!")
     document.getElementById("result").innerHTML = (
       `<p>Score is ${playerScore} to ${computerScore}.  
       It's a draw! Better luck next time.</p>
-      <button onClick="game()">Play again?</button>`
+      <button onClick="playAgain()">Play again?</button>`
     )
   }
   else if(playerScore > computerScore){
-    console.log("You win!")
     document.getElementById("result").innerHTML = (
       `<p>Score is ${playerScore} to ${computerScore}.  
       You win!</p>
-      <button onClick="game()">Play again?</button>`
+      <button onClick="playAgain()">Play again?</button>`
     )
   }
   else {
-    console.log("Better luck next time");
     document.getElementById("result").innerHTML = (
       `<p>Score is ${playerScore} to ${computerScore}.  
       You lose, better luck next time!</p>
-      <button onClick="game()">Play again?</button>`
+      <button onClick="playAgain()">Play again?</button>`
     )
   }
-}
+};
 
-game()
+function playAgain() {
+  playerScore = 0;
+  computerScore = 0;
+  displayScore();
+  document.getElementById("result").innerHTML = ("<p> </p>");
+  document.getElementById("round").innerHTML = ("<p> </p>");
+};
+
+displayScore()
