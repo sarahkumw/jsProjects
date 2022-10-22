@@ -1,6 +1,11 @@
 let playerScore = 0;
 let computerScore = 0;
 
+function displayScore() {
+  const div = document.getElementById("score");
+  div.textContent = `You: ${playerScore} Computer: ${computerScore}`
+};
+
 function computerPlay(){
   const plays = ["rock", "paper", "scissors"];
   const randomIndex = Math.floor(plays.length * Math.random());
@@ -40,11 +45,6 @@ function playRound(playerSelection){
       }
     }
   }
-};
-
-function displayScore() {
-  const div = document.getElementById("score");
-  div.textContent = `You: ${playerScore} Computer: ${computerScore}`
 };
 
 function endGame(){
